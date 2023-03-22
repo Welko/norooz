@@ -1,0 +1,129 @@
+<html>
+<head>
+<title>Norooz countdown</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Vazirmatn&display=swap');
+html, body {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	display: flex;
+	flex-direction: column;
+	padding: 1em;
+	background: linear-gradient(rgba(255,203,225,1), rgba(215,239,254,1));
+	overflow-y: auto;
+	font-family: 'Dancing Script', cursive;
+}
+body > * {
+	margin-left: auto;
+	margin-right: auto;
+}
+body > * + * {
+	margin-top: 0;
+}
+body > p {
+	font-size: 5em;
+	font-weight: bold;
+	line-height: 1em;
+}
+img {
+	max-width: 25%;
+	border-radius: 50%;
+}
+#countdown {
+	font-size: 2em;
+}
+#countdown > span {
+	display: inline-block;
+	border-radius: 1.5em;
+	width: 4em;
+	height: 4em;
+	background: #fbeaa2;
+	line-height: 4em;
+	text-align: center;
+	box-shadow: 0 0 0.5em black;
+	/*font-family: monospace;*/
+	font-family: 'Vazirmatn', sans-serif;
+}
+.farsi {
+	font-family: 'Vazirmatn', sans-serif;
+}
+.yay {
+	color: #f7b4c7;
+	text-shadow: 0 0 1em black;
+	-webkit-text-stroke: 0.03em black;
+}
+</style>
+</head>
+<body>
+
+<img src="https://img.freepik.com/premium-vector/cute-easter-bunny-holding-eggs_37741-901.jpg?w=2000">
+
+<p id="happyNewYear" class="farsi">!سال نو مبارک</p>
+
+<div id="countdown">
+	<span id="h1">0</span>
+	<span id="h2">0</span>
+	:
+	<span id="m1">0</span>
+	<span id="m2">0</span>
+	:
+	<span id="s1">0</span>
+	<span id="s2">0</span>
+</div>
+
+<script src="confetti.js"></script>
+
+<script>
+
+const h1 = document.getElementById("h1");
+const h2 = document.getElementById("h2");
+const m1 = document.getElementById("m1");
+const m2 = document.getElementById("m2");
+const s1 = document.getElementById("s1");
+const s2 = document.getElementById("s2");
+const happyNewYear = document.getElementById("happyNewYear");
+
+const norooz = new Date();
+norooz.setHours(22 + 1);
+norooz.setMinutes(24);
+
+function updateTime(hours, minutes, seconds) {
+	hours = (""+hours).padStart(2, "0");
+	minutes = (""+minutes).padStart(2, "0");
+	seconds = (""+seconds).padStart(2, "0");
+	
+	h1.textContent = hours.charAt(0);
+	h2.textContent = hours.charAt(1);
+	m1.textContent = minutes.charAt(0);
+	m2.textContent = minutes.charAt(1);
+	s1.textContent = seconds.charAt(0);
+	s2.textContent = seconds.charAt(1);
+}
+
+const interval = setInterval(() => {
+	const now = new Date();
+	const diff = norooz - now;
+	
+	if (diff <= 0) {
+		clearInterval(interval);
+		confetti.start();
+		happyNewYear.classList.add("yay");
+		updateTime(0, 0, 0);
+		return;
+	}
+	
+	const msToHours = 60 * 60 * 1000;
+	
+	const hours = Math.max(0, Math.floor(diff / msToHours));
+	const minutes = Math.max(Math.floor((diff % msToHours) / (60*1000)));
+	const seconds = Math.max(Math.floor(((diff % msToHours) % (60*1000)) / 1000));
+	
+	updateTime(hours, minutes, seconds);
+});
+
+</script>
+</body>
+</html>
